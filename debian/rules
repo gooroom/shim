@@ -7,17 +7,23 @@ include /usr/share/dpkg/architecture.mk
 # be signed with this key; so if you are building your own shim binary you
 # should be building the other binaries also.
 ifeq ($(shell dpkg-vendor --is ubuntu && echo yes),yes)
-	cert=debian/canonical-uefi-ca.der
+	cert=canonical-uefi-ca.der
 	distributor=ubuntu
 COMMON_OPTIONS ?= ENABLE_SHIM_CERT=1 ENABLE_SBSIGN=1
 else
-	cert=debian/debian-uefi-ca.der
+	cert=debian-uefi-ca.der
 	distributor=debian
 endif
 
 deb_version             := $(shell dpkg-parsechangelog | sed -ne "s/^Version: \(.*\)/\1/p")
 upstream_version        := $(shell echo $(deb_version) | sed -e "s/-[^-]*$$//")
 plain_upstream_version  := $(shell echo $(upstream_version) | sed -e "s/+dfsg.*//")
+
+jenkins_dir=build_keystore/shim-boot-protector
+key_path=/var/lib/jenkins/$(jenkins_dir)
+
+cert=gooroom-uefi-ca.der
+distributor=gooroom
 
 DBX_LIST = dbx.esl
 DBX_HASHES = debian/$(distributor)-dbx.hashes
@@ -28,6 +34,8 @@ include /usr/share/dpkg/architecture.mk
 
 ifeq ($(DEB_HOST_ARCH),amd64)
 export EFI_ARCH := x64
+# TODO. 
+export ARCH=x86_64
 endif
 ifeq ($(DEB_HOST_ARCH),arm64)
 export EFI_ARCH := aa64
@@ -41,11 +49,14 @@ COMMON_OPTIONS += \
 	COMMIT_ID=XXXX \
 	MAKELEVEL=0 \
 	ENABLE_HTTPBOOT=true \
+	ENABLE_SHIM_CERT=1 \
+	ENABLE_SBSIGN=1 \
 	VENDOR_CERT_FILE=$(cert) \
 	VENDOR_DBX_FILE=$(DBX_LIST) \
 	EFIDIR=$(distributor) \
 	CROSS_COMPILE=$(DEB_HOST_GNU_TYPE)- \
 	CC=$(DEB_HOST_GNU_TYPE)-gcc-8 \
+	LIBDIR=/usr \
 	$(NULL)
 
 $(DBX_LIST): $(DBX_HASHES)
@@ -68,6 +79,14 @@ override_dh_auto_clean:
 	rm -f $(DBX_LIST) $(SBAT_DATA) sbat.*.csv BOOT*.CSV test-csv test-sbat test-str
 
 override_dh_auto_build: $(DBX_LIST) $(SBAT_DATA)
+	set -e; \
+	if [ -e $(key_path) ]; then \
+		if [ -e $(key_path)/$(cert) ]; then cp $(key_path)/$(cert) debian/; fi; \
+		./debian/make-certs-gooroom $(key_path); \
+	else \
+		./debian/make-certs-gooroom; \
+	fi
+
 	dh_auto_build -- $(COMMON_OPTIONS)
 
 override_dh_auto_install:
