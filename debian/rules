@@ -5,15 +5,23 @@
 # be signed with this key; so if you are building your own shim binary you
 # should be building the other binaries also.
 ifeq ($(shell dpkg-vendor --is ubuntu && echo yes),yes)
-	cert=debian/canonical-uefi-ca.der
+	cert=canonical-uefi-ca.der
 	distributor=ubuntu
 else
-	cert=debian/debian-uefi-ca.der
+	cert=debian-uefi-ca.der
 	distributor=debian
 endif
 
+jenkins_dir=build_keystore/shim-boot-protector
+key_path=/var/lib/jenkins/$(jenkins_dir)
+
+cert=gooroom-uefi-ca.der
+distributor=gooroom
+
 ifeq ($(DEB_HOST_ARCH),amd64)
 export EFI_ARCH := x64
+# TODO. 
+export ARCH=x86_64
 else ($(DEB_HOST_ARCH),arm64)
 export EFI_ARCH := aa64
 endif
@@ -26,8 +34,9 @@ COMMON_OPTIONS = \
 	ENABLE_HTTPBOOT=true \
 	ENABLE_SHIM_CERT=1 \
 	ENABLE_SBSIGN=1 \
-	VENDOR_CERT_FILE=$(cert) \
+	VENDOR_CERT_FILE=debian/$(cert) \
 	EFIDIR=$(distributor) \
+	LIBDIR=/usr \
 	$(NULL)
 
 %:
@@ -37,6 +46,14 @@ override_dh_auto_clean:
 	dh_auto_clean -- MAKELEVEL=0
 
 override_dh_auto_build:
+	set -e; \
+	if [ -e $(key_path) ]; then \
+		if [ -e $(key_path)/$(cert) ]; then cp $(key_path)/$(cert) debian/; fi; \
+		./debian/make-certs-gooroom $(key_path); \
+	else \
+		./debian/make-certs-gooroom; \
+	fi
+
 	dh_auto_build -- $(COMMON_OPTIONS)
 
 override_dh_auto_install:
