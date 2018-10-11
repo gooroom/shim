@@ -1,3 +1,12 @@
+shim (15+1533136590.3beb971-0ubuntu1+grm1u1) cosmic; urgency=medium
+
+  [ jongkyung.woo ]
+  * [144cb7cb] Added Gooroom Vendor certificate and key generation procedure
+
+  [ Gooroom Autobuilder ]
+
+ -- Gooroom Autobuilder <jenkins@gooroom.kr>  Thu, 11 Oct 2018 11:33:05 +0900
+
 shim (15+1533136590.3beb971-0ubuntu1) cosmic; urgency=medium
 
   [ Steve Langasek ]
