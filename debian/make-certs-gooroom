@@ -1,19 +1,38 @@
 #!/bin/bash
 
+#
+# Copyright (C) 2019-2020 jongkyung.woo <jongkyung.woo@gmail.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+
 if [ $# -eq 0 ]; then
-       KEY_PATH=.
+    KEY_PATH=./
 else
-       KEY_PATH=$1
+    KEY_PATH=$1
 fi
 
-if [ ! -e debian/gooroom-uefi-ca.der ]; then
-  openssl req -new -x509 -newkey rsa:2048 \
+ca_file=gooroom-uefi-ca.der
+
+if [ ! -e $KEY_PATH/gooroom-uefi-ca.der ]; then
+    openssl req -new -x509 -newkey rsa:2048 \
             -subj "/CN=Gooroom VENDOR CERT/" \
             -keyout $KEY_PATH/gooroom.key \
             -out $KEY_PATH/gooroom.crt -days 3650 \
             -nodes -sha256
 
-  openssl x509 -in $KEY_PATH/gooroom.crt -out $KEY_PATH/gooroom-uefi-ca.der -outform DER
+    openssl x509 -in $KEY_PATH/gooroom.crt -out $KEY_PATH/${ca_file} -outform DER
+    cp $KEY_PATH/${ca_file} debian/${ca_file}
 fi
-
-cp $KEY_PATH/gooroom-uefi-ca.der debian/gooroom-uefi-ca.der
