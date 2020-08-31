@@ -7,11 +7,11 @@ include /usr/share/dpkg/architecture.mk
 # be signed with this key; so if you are building your own shim binary you
 # should be building the other binaries also.
 ifeq ($(shell dpkg-vendor --is ubuntu && echo yes),yes)
-	cert=canonical-uefi-ca.der
+	cert=debian/canonical-uefi-ca.der
 	distributor=ubuntu
 COMMON_OPTIONS ?= ENABLE_SHIM_CERT=1 ENABLE_SBSIGN=1
 else
-	cert=debian-uefi-ca.der
+	cert=debian/debian-uefi-ca.der
 	distributor=debian
 endif
 
@@ -23,7 +23,17 @@ jenkins_dir=build_keystore/shim-boot-protector
 key_path=/var/lib/jenkins/$(jenkins_dir)
 
 cert=gooroom-uefi-ca.der
+
+# gooroom
+cert_name=gooroom-uefi-ca.der
+cert=debian/$(cert_name)
+
 distributor=gooroom
+
+# - gooroom build variables
+codename=gooroom-2.0
+jenkins_dir=build_keystore/$(codename)/shim-boot-protector
+key_path=/var/lib/jenkins/$(jenkins_dir)
 
 DBX_LIST = dbx.esl
 DBX_HASHES = debian/$(distributor)-dbx.hashes
@@ -80,11 +90,10 @@ override_dh_auto_clean:
 
 override_dh_auto_build: $(DBX_LIST) $(SBAT_DATA)
 	set -e; \
-	if [ -e $(key_path) ]; then \
-		if [ -e $(key_path)/$(cert) ]; then cp $(key_path)/$(cert) debian/; fi; \
-		./debian/make-certs-gooroom $(key_path); \
+	if [ -e $(key_path)/$(cert_name) ]; then \
+		 cp $(key_path)/$(cert_name) debian/; \
 	else \
-		./debian/make-certs-gooroom; \
+		./debian/make-certs-gooroom $(key_path); \
 	fi
 
 	dh_auto_build -- $(COMMON_OPTIONS)
