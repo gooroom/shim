@@ -1,3 +1,13 @@
+shim (15+1533136590.3beb971-7+deb10u1+grm2u1) buster; urgency=medium
+
+  [ jongkyung.woo ]
+  * [322ddc9d] Added Gooroom Vendor certificate and key generation procedure
+  * [03efc4ba] Added gooroom-dbx.hashes and codename on gooroom-2.0
+
+  [ Gooroom Autobuilder ]
+
+ -- Gooroom Autobuilder <jenkins@gooroom.kr>  Fri, 18 Sep 2020 15:52:01 +0900
+
 shim (15+1533136590.3beb971-7+deb10u1) buster; urgency=medium
 
   [ Steve McIntyre ]
