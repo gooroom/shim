@@ -1,17 +1,103 @@
-shim (15+1533136590.3beb971-7+deb10u1+grm2u1) buster; urgency=medium
+shim (15.4-5~deb10u1) buster; urgency=medium
 
-  [ jongkyung.woo ]
-  * [322ddc9d] Added Gooroom Vendor certificate and key generation procedure
-  * [03efc4ba] Added gooroom-dbx.hashes and codename on gooroom-2.0
+  * Add defensive code around calls to db_get. Don't fail if they
+    return errors.
 
-  [ Gooroom Autobuilder ]
+ -- Steve McIntyre <93sam@debian.org>  Sat, 08 May 2021 00:14:00 +0100
 
- -- Gooroom Autobuilder <jenkins@gooroom.kr>  Fri, 18 Sep 2020 15:52:01 +0900
+shim (15.4-4~deb10u1) unstable; urgency=medium
 
-shim (15+1533136590.3beb971-7+deb10u1) buster; urgency=medium
+  * Fix up those maintainer scripts - if we're not running on an EFI
+    system then exit cleanly.
+
+ -- Steve McIntyre <93sam@debian.org>  Mon, 03 May 2021 21:31:33 +0100
+
+shim (15.4-3~deb10u1) buster; urgency=medium
+
+  * Add maintainer scripts to the template packages to manage
+    installing and removing fbXXX.efi and mmXXX.efi when we
+    install/remove the shim-helpers-$arch-signed packages.
+    Closes: #966845
+
+ -- Steve McIntyre <93sam@debian.org>  Mon, 03 May 2021 21:31:33 +0100
+
+shim (15.4-2~deb10u1) buster; urgency=medium
+
+  * Add two further patches from upstream:
+    + fix import_one_mok_state() after split
+    + Don't call QueryVariableInfo() on EFI 1.10 machines (e.g. older
+      Intel Mac machines)
+
+ -- Steve McIntyre <93sam@debian.org>  Wed, 21 Apr 2021 01:06:27 +0100
+
+shim (15.4-1~deb10u1) buster; urgency=medium
+
+  * New upstream release fixing more bugs: SBAT and arm64 support
+  * Print sha256 checksums of the EFI binaries when the build is done
+  * Add two patches from upstream:
+    + fix i386 binary relocations
+    + allocate MOK config table as BootServicesData
+
+ -- Steve McIntyre <93sam@debian.org>  Wed, 31 Mar 2021 19:56:02 +0100
+
+shim (15.3-1~deb10u3) buster; urgency=medium
+
+  * Only include the upstream version in the Debian SBAT metadata, so
+    we don't break reproducibility on every minor packaging change.
+
+ -- Steve McIntyre <93sam@debian.org>  Wed, 24 Mar 2021 13:31:51 +0000
+
+shim (15.3-1~deb10u2) buster; urgency=medium
+
+  * Add missing build-dep on xxd for build-time unit tests
+
+ -- Steve McIntyre <93sam@debian.org>  Wed, 24 Mar 2021 02:26:22 +0000
+
+shim (15.3-1~deb10u1) buster; urgency=medium
+
+  * Rebuild the new upstream version for buster
+  * Switch to gcc-8 for building
+  * Switch to much-newer release with many fixes
+    + Particularly pulling in SBAT changes for better revocation support
+    + Remove all our old patches, no longer needed:
+      - avoid_null_vsprint.patch
+      - check_null_sn_ln.patch
+      - fixup_git.patch
+      - uname.patch
+      - use_compare_mem_gcc9.patch
+    + Now includes a vendor copy of gnu-efi with quite a few extra
+      fixes needed.
+    + Update copyright file to cover these changes
+  * Add dbx entries for all our existing grub binaries
+    + They're insecure, let's break the chainloading hole.
+  * Add Debian SBAT data
+    + Add a Debian SBAT template, and rules to use it
+    + Adds a build-dep on dos2unix
+
+ -- Steve McIntyre <93sam@debian.org>  Wed, 24 Mar 2021 01:09:20 +0000
+
+shim (15+1533136590.3beb971-10) unstable; urgency=medium
+
+  [ Debian Janitor ]
+  * Trim trailing whitespace.
+  * Use secure copyright file specification URI.
+  * debian/copyright: use spaces rather than tabs to start continuation
+    lines.
+  * Bump debhelper from old 11 to 12.
+  * Set debhelper-compat version in Build-Depends.
+  * Set upstream metadata fields: Bug-Database, Bug-Submit.
+  * Update standards version to 4.4.1, no changes needed.
 
   [ Steve McIntyre ]
-  * Minimal-change upload to pick up rotated Debian signing keys
+  * Trivial changes to generating the inbuilt dbx if we're using it.
+  * Upload to pick up rotated Debian signing keys
+
+ -- Steve McIntyre <93sam@debian.org>  Fri, 24 Jul 2020 01:22:46 +0100
+
+shim (15+1533136590.3beb971-9) unstable; urgency=medium
+
+  [ Steve McIntyre ]
+
   * In the -helpers-ARCH-signed packages, change the version
     dependency on shim-unsigned to be >= and not =. This will allow
     for installation to still work in the window while we wait for the
@@ -19,6 +105,20 @@ shim (15+1533136590.3beb971-7+deb10u1) buster; urgency=medium
     archive. Closes: #955356
 
  -- Steve McIntyre <93sam@debian.org>  Fri, 24 Jul 2020 00:57:16 +0100
+
+shim (15+1533136590.3beb971-8) unstable; urgency=medium
+
+  [ Steve McIntyre ]
+  * Use --padding when calling pesign to generate hashes for the dbx
+    list, as recommended by Peter Jones. No actual changes needed in
+    our list of hashes at this point - they work out the same either
+    way.
+  * Switch to using gcc-9 for builds, tweaking a patch from upstream
+    to fix a FTBFS. Closes: #925816
+  * Update debhelper compat level to 11 for shim and the
+    signing-template
+
+ -- Steve McIntyre <93sam@debian.org>  Tue, 24 Mar 2020 16:51:10 +0000
 
 shim (15+1533136590.3beb971-7) unstable; urgency=medium
 
@@ -162,7 +262,7 @@ shim (0.9+1474479173.6c180c6-1) unstable; urgency=medium
 shim (0.9+1474479173.6c180c6-0ubuntu1) UNRELEASED; urgency=medium
 
   [ Helen Koike ]
-  * debian/copyright: add OpenSSL license 
+  * debian/copyright: add OpenSSL license
 
   [ Mathieu Trudel-Lapierre ]
   * New upstream release.
@@ -187,7 +287,7 @@ shim (0.9+1465500757.14a5905-0ubuntu1) yakkety; urgency=medium
   * Refreshed patches.
     - Remaining patches:
       + second-stage-path
-      + sbsigntool-not-pesign 
+      + sbsigntool-not-pesign
   * debian/patches/unused-variable: remove unused variable size.
   * debian/patches/binutils-version-matching: revert d9a4c912 to correctly
     match objcopy's version on Ubuntu.

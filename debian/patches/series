@@ -1,4 +1,4 @@
-fixup_git.patch
-uname.patch
-avoid_null_vsprint.patch
-check_null_sn_ln.patch
+fix-import_one_mok_state.patch
+fix-broken-ia32-reloc.patch
+MOK-BootServicesData.patch
+Don-t-call-QueryVariableInfo-on-EFI-1.10-machines.patch
