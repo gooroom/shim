@@ -1,3 +1,12 @@
+shim (15.4-5~deb10u1+grm2u1) buster; urgency=medium
+
+  [ jongkyung.woo ]
+  * [918647e6] Added Gooroom Vendor certificate and key generation procedure
+  * [815a9676] Added gooroom-dbx.hashes and codename on gooroom-2.0
+  * [58310344] Added debian/sbat.gooroom.csv.in
+
+ -- Gooroom Autobuilder <jenkins@gooroom.kr>  Tue, 22 Jun 2021 18:09:47 +0900
+
 shim (15.4-5~deb10u1) buster; urgency=medium
 
   * Add defensive code around calls to db_get. Don't fail if they
