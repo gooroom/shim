@@ -66,7 +66,6 @@ COMMON_OPTIONS += \
 	EFIDIR=$(distributor) \
 	CROSS_COMPILE=$(DEB_HOST_GNU_TYPE)- \
 	CC=$(DEB_HOST_GNU_TYPE)-gcc-8 \
-	LIBDIR=/usr \
 	$(NULL)
 
 $(DBX_LIST): $(DBX_HASHES)
