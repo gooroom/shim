@@ -1,36 +1,78 @@
-shim (15.4-5~deb10u1) buster; urgency=medium
+shim (15.6-1) unstable; urgency=medium
+
+  * New upstream release fixing more bugs
+    + Remove all our old patches, all now upstream:
+      - fix-32b-format-strings.patch
+      - fix-test-includes.patch
+
+ -- Steve McIntyre <93sam@debian.org>  Thu, 21 Jul 2022 14:04:01 +0200
+
+shim (15.5-1) UNRELEASED; urgency=medium
+
+  * New upstream release fixing more bugs
+    + Remove all our old patches, all now upstream:
+      - Don-t-call-QueryVariableInfo-on-EFI-1.10-machines.patch
+      - MOK-BootServicesData.patch
+      -	fix-broken-ia32-reloc.patch
+      -	fix-import_one_mok_state.patch
+      - fix_arm64_rela_sections.patch
+      - relax_check_for_import_mok_state.patch
+  * Fix format strings for 32-bit builds
+  * Tweak setup for dh_auto_test so the tests work
+  * Add new build-dep on libefivar-dev for tests
+
+ -- Steve McIntyre <93sam@debian.org>  Wed, 27 Apr 2022 22:50:08 +0100
+
+shim (15.4-7) unstable; urgency=high
+
+  * Tweak how we call grub-install; don't abort on error. Not ideal
+    behaviour either, but don't break upgrades. Copy the behaviour
+    from the grub packages here. Closes: #990966
+
+ -- Steve McIntyre <93sam@debian.org>  Mon, 12 Jul 2021 08:53:54 +0100
+
+shim (15.4-6) unstable; urgency=high
+
+  * Add arm64 patch to tweak section layout and stop crashing
+    problems. Upstream issue #371. Closes: #990082, #990190
+  * In insecure mode, don't abort if we can't create the MokListXRT
+    variable. Upstream issue #372. Closes: #989962, #990158
+
+ -- Steve McIntyre <93sam@debian.org>  Wed, 23 Jun 2021 19:03:54 +0100
+
+shim (15.4-5) unstable; urgency=medium
 
   * Add defensive code around calls to db_get. Don't fail if they
     return errors.
 
- -- Steve McIntyre <93sam@debian.org>  Sat, 08 May 2021 00:14:00 +0100
+ -- Steve McIntyre <93sam@debian.org>  Thu, 06 May 2021 00:37:49 +0100
 
-shim (15.4-4~deb10u1) unstable; urgency=medium
+shim (15.4-4) unstable; urgency=medium
 
   * Fix up those maintainer scripts - if we're not running on an EFI
     system then exit cleanly.
 
- -- Steve McIntyre <93sam@debian.org>  Mon, 03 May 2021 21:31:33 +0100
+ -- Steve McIntyre <93sam@debian.org>  Tue, 04 May 2021 17:53:21 +0100
 
-shim (15.4-3~deb10u1) buster; urgency=medium
+shim (15.4-3) unstable; urgency=medium
 
   * Add maintainer scripts to the template packages to manage
     installing and removing fbXXX.efi and mmXXX.efi when we
     install/remove the shim-helpers-$arch-signed packages.
     Closes: #966845
 
- -- Steve McIntyre <93sam@debian.org>  Mon, 03 May 2021 21:31:33 +0100
+ -- Steve McIntyre <93sam@debian.org>  Mon, 03 May 2021 20:48:49 +0100
 
-shim (15.4-2~deb10u1) buster; urgency=medium
+shim (15.4-2) unstable; urgency=medium
 
   * Add two further patches from upstream:
     + fix import_one_mok_state() after split
     + Don't call QueryVariableInfo() on EFI 1.10 machines (e.g. older
       Intel Mac machines)
 
- -- Steve McIntyre <93sam@debian.org>  Wed, 21 Apr 2021 01:06:27 +0100
+ -- Steve McIntyre <93sam@debian.org>  Wed, 21 Apr 2021 00:23:02 +0100
 
-shim (15.4-1~deb10u1) buster; urgency=medium
+shim (15.4-1) unstable; urgency=medium
 
   * New upstream release fixing more bugs: SBAT and arm64 support
   * Print sha256 checksums of the EFI binaries when the build is done
@@ -38,25 +80,25 @@ shim (15.4-1~deb10u1) buster; urgency=medium
     + fix i386 binary relocations
     + allocate MOK config table as BootServicesData
 
- -- Steve McIntyre <93sam@debian.org>  Wed, 31 Mar 2021 19:56:02 +0100
+ -- Steve McIntyre <93sam@debian.org>  Wed, 31 Mar 2021 18:25:00 +0100
 
-shim (15.3-1~deb10u3) buster; urgency=medium
+shim (15.3-3) unstable; urgency=medium
 
+  * Update the timestamp for the 15.3-2 upload.
   * Only include the upstream version in the Debian SBAT metadata, so
     we don't break reproducibility on every minor packaging change.
 
- -- Steve McIntyre <93sam@debian.org>  Wed, 24 Mar 2021 13:31:51 +0000
+ -- Steve McIntyre <93sam@debian.org>  Wed, 24 Mar 2021 13:21:05 +0000
 
-shim (15.3-1~deb10u2) buster; urgency=medium
+shim (15.3-2) unstable; urgency=medium
 
   * Add missing build-dep on xxd for build-time unit tests
 
- -- Steve McIntyre <93sam@debian.org>  Wed, 24 Mar 2021 02:26:22 +0000
+ -- Steve McIntyre <93sam@debian.org>  Wed, 24 Mar 2021 02:21:53 +0000
 
-shim (15.3-1~deb10u1) buster; urgency=medium
+shim (15.3-1) unstable; urgency=medium
 
-  * Rebuild the new upstream version for buster
-  * Switch to gcc-8 for building
+  [ Steve McIntyre ]
   * Switch to much-newer release with many fixes
     + Particularly pulling in SBAT changes for better revocation support
     + Remove all our old patches, no longer needed:
@@ -68,13 +110,14 @@ shim (15.3-1~deb10u1) buster; urgency=medium
     + Now includes a vendor copy of gnu-efi with quite a few extra
       fixes needed.
     + Update copyright file to cover these changes
+  * Switch to using gcc-10 rather than gcc-9. Closes: #978521
   * Add dbx entries for all our existing grub binaries
     + They're insecure, let's break the chainloading hole.
   * Add Debian SBAT data
     + Add a Debian SBAT template, and rules to use it
     + Adds a build-dep on dos2unix
 
- -- Steve McIntyre <93sam@debian.org>  Wed, 24 Mar 2021 01:09:20 +0000
+ -- Steve McIntyre <93sam@debian.org>  Tue, 23 Mar 2021 23:39:48 +0000
 
 shim (15+1533136590.3beb971-10) unstable; urgency=medium
 
@@ -97,14 +140,13 @@ shim (15+1533136590.3beb971-10) unstable; urgency=medium
 shim (15+1533136590.3beb971-9) unstable; urgency=medium
 
   [ Steve McIntyre ]
-
   * In the -helpers-ARCH-signed packages, change the version
     dependency on shim-unsigned to be >= and not =. This will allow
     for installation to still work in the window while we wait for the
     template package to do its second trip through the
     archive. Closes: #955356
 
- -- Steve McIntyre <93sam@debian.org>  Fri, 24 Jul 2020 00:57:16 +0100
+ -- Steve McIntyre <93sam@debian.org>  Mon, 30 Mar 2020 15:19:08 +0100
 
 shim (15+1533136590.3beb971-8) unstable; urgency=medium
 

@@ -45,7 +45,7 @@ COMMON_OPTIONS += \
 	VENDOR_DBX_FILE=$(DBX_LIST) \
 	EFIDIR=$(distributor) \
 	CROSS_COMPILE=$(DEB_HOST_GNU_TYPE)- \
-	CC=$(DEB_HOST_GNU_TYPE)-gcc-8 \
+	CC=$(DEB_HOST_GNU_TYPE)-gcc-10 \
 	$(NULL)
 
 $(DBX_LIST): $(DBX_HASHES)
@@ -68,10 +68,13 @@ override_dh_auto_clean:
 	rm -f $(DBX_LIST) $(SBAT_DATA) sbat.*.csv BOOT*.CSV test-csv test-sbat test-str
 
 override_dh_auto_build: $(DBX_LIST) $(SBAT_DATA)
-	dh_auto_build -- $(COMMON_OPTIONS)
+	dh_auto_build -- INSTALL=install $(COMMON_OPTIONS)
+
+override_dh_auto_test: $(DBX_LIST) $(SBAT_DATA)
+	dh_auto_test -- INSTALL=install $(COMMON_OPTIONS)
 
 override_dh_auto_install:
-	dh_auto_install --destdir=debian/tmp -- $(COMMON_OPTIONS)
+	dh_auto_install --destdir=debian/tmp -- INSTALL=install $(COMMON_OPTIONS)
 	# Remove the copy of the source that's installed - we have git
 	# already...
 	rm -rf debian/tmp/usr
