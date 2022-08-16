@@ -57,8 +57,6 @@ COMMON_OPTIONS += \
 	COMMIT_ID=XXXX \
 	MAKELEVEL=0 \
 	ENABLE_HTTPBOOT=true \
-	ENABLE_SHIM_CERT=1 \
-	ENABLE_SBSIGN=1 \
 	VENDOR_CERT_FILE=$(cert) \
 	VENDOR_DBX_FILE=$(DBX_LIST) \
 	EFIDIR=$(distributor) \
@@ -95,7 +93,10 @@ override_dh_auto_build: $(DBX_LIST) $(SBAT_DATA)
 	    fi \
         fi
 
-	dh_auto_build -- $(COMMON_OPTIONS)
+	dh_auto_build -- INSTALL=install $(COMMON_OPTIONS)
+
+override_dh_auto_test: $(DBX_LIST) $(SBAT_DATA)
+	dh_auto_test -- INSTALL=install $(COMMON_OPTIONS)
 
 override_dh_auto_install:
 	dh_auto_install --destdir=debian/tmp -- INSTALL=install $(COMMON_OPTIONS)
