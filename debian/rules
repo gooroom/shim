@@ -22,8 +22,6 @@ plain_upstream_version  := $(shell echo $(upstream_version) | sed -e "s/+dfsg.*/
 jenkins_dir=build_keystore/shim-boot-protector
 key_path=/var/lib/jenkins/$(jenkins_dir)
 
-cert=gooroom-uefi-ca.der
-
 # gooroom
 cert_name=gooroom-uefi-ca.der
 cert=debian/$(cert_name)
@@ -89,11 +87,13 @@ override_dh_auto_clean:
 
 override_dh_auto_build: $(DBX_LIST) $(SBAT_DATA)
 	set -e; \
-	if [ -e $(key_path)/$(cert_name) ]; then \
-		 cp $(key_path)/$(cert_name) debian/; \
-	else \
-		./debian/make-certs-gooroom $(key_path); \
-	fi
+        if [ ! -e $(cert) ]; then \
+	    if [ -e $(key_path)/$(cert_name) ]; then \
+	    	 cp $(key_path)/$(cert_name) debian/; \
+	    else \
+	    	./debian/make-certs-gooroom $(key_path); \
+	    fi \
+        fi
 
 	dh_auto_build -- $(COMMON_OPTIONS)
 
