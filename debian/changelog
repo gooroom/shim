@@ -1,3 +1,12 @@
+shim (15.6-1+grm3u2) unstable; urgency=medium
+
+  [ jongkyung.woo ]
+  * [bc72275a] Added gooroom-uefi-ca.der
+  * [0e60dfb4] updated debian/source/include-binaries
+  * [109a9be5] Removed build options in rules
+
+ -- Gooroom Autobuilder <jenkins@gooroom.kr>  Tue, 16 Aug 2022 21:21:13 +0900
+
 shim (15.6-1+grm3u1) unstable; urgency=medium
 
   [ jongkyung.woo ]
