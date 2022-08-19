@@ -1,3 +1,10 @@
+shim (15.6-1+grm3u3) unstable; urgency=medium
+
+  [ jongkyung.woo ]
+  * [71e7b8ad] Updated gooroom-uefi-ca.der info
+
+ -- Gooroom Autobuilder <jenkins@gooroom.kr>  Fri, 19 Aug 2022 18:24:21 +0900
+
 shim (15.6-1+grm3u2) unstable; urgency=medium
 
   [ jongkyung.woo ]
