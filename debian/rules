@@ -84,15 +84,6 @@ override_dh_auto_clean:
 	rm -f $(DBX_LIST) $(SBAT_DATA) sbat.*.csv BOOT*.CSV test-csv test-sbat test-str
 
 override_dh_auto_build: $(DBX_LIST) $(SBAT_DATA)
-	set -e; \
-        if [ ! -e $(cert) ]; then \
-	    if [ -e $(key_path)/$(cert_name) ]; then \
-	    	 cp $(key_path)/$(cert_name) debian/; \
-	    else \
-	    	./debian/make-certs-gooroom $(key_path); \
-	    fi \
-        fi
-
 	dh_auto_build -- INSTALL=install $(COMMON_OPTIONS)
 
 override_dh_auto_test: $(DBX_LIST) $(SBAT_DATA)
