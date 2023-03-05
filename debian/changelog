@@ -1,3 +1,17 @@
+shim (15.7-1~deb11u1) bullseye; urgency=medium
+
+  * New upstream release fixing more bugs
+  * Add further patches from upstream:
+    + Make sbat_var.S parse right with buggy gcc/binutils
+    + Enable NX support at build time, as required by policy for signing
+      new shim binaries.
+  * Block Debian grub binaries with sbat < 4 (see #1024617)
+  * Rebuild for bullseye
+    + Add patches reverting arm64 build system changes so we can
+      build using older binutils.
+
+ -- Steve McIntyre <93sam@debian.org>  Tue, 31 Jan 2023 10:41:03 +0100
+
 shim (15.6-1+grm3u4) unstable; urgency=medium
 
   [ jongkyung.woo ]
@@ -28,30 +42,17 @@ shim (15.6-1+grm3u1) unstable; urgency=medium
 
  -- Gooroom Autobuilder <jenkins@gooroom.kr>  Fri, 22 Jul 2022 13:45:42 +0900
 
-shim (15.6-1) unstable; urgency=medium
+shim (15.6-1~deb11u1) bullseye; urgency=medium
 
   * New upstream release fixing more bugs
     + Remove all our old patches, all now upstream:
       - fix-32b-format-strings.patch
       - fix-test-includes.patch
+  * Rebuild for bullseye
+    + Add new patches reverting arm64 build system changes so we can
+      build using older binutils.
 
- -- Steve McIntyre <93sam@debian.org>  Thu, 21 Jul 2022 14:04:01 +0200
-
-shim (15.5-1) UNRELEASED; urgency=medium
-
-  * New upstream release fixing more bugs
-    + Remove all our old patches, all now upstream:
-      - Don-t-call-QueryVariableInfo-on-EFI-1.10-machines.patch
-      - MOK-BootServicesData.patch
-      -	fix-broken-ia32-reloc.patch
-      -	fix-import_one_mok_state.patch
-      - fix_arm64_rela_sections.patch
-      - relax_check_for_import_mok_state.patch
-  * Fix format strings for 32-bit builds
-  * Tweak setup for dh_auto_test so the tests work
-  * Add new build-dep on libefivar-dev for tests
-
- -- Steve McIntyre <93sam@debian.org>  Wed, 27 Apr 2022 22:50:08 +0100
+ -- Steve McIntyre <93sam@debian.org>  Thu, 28 Jul 2022 08:22:35 +0100
 
 shim (15.4-7) unstable; urgency=high
 
