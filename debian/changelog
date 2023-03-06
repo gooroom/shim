@@ -1,3 +1,22 @@
+shim (15.7-1~deb11u1+grm3u1) bullseye; urgency=medium
+
+  [ jongkyung.woo ]
+  * [586b61f7] Rebased on gooroom-3.0
+  * [bc72275a] Added gooroom-uefi-ca.der
+  * [0e60dfb4] updated debian/source/include-binaries
+  * [109a9be5] Removed build options in rules
+  * [71e7b8ad] Updated gooroom-uefi-ca.der info
+  * [5adc7524] Updated SBAT in sbat.gooroom.csv.in
+  * [df57edec] Rebuild debian/15.7-1_deb11u1 on gooroom-3.0
+
+  [ Jenkins User ]
+  * [a9bf8b6f] Version 15.6-1+grm3u1 released
+  * [10cb8088] Version 15.6-1+grm3u2 released
+  * [296d6d2f] Version 15.6-1+grm3u3 released
+  * [7a5b8a8d] Version 15.6-1+grm3u4 released
+
+ -- Gooroom Autobuilder <jenkins@gooroom.kr>  Mon, 06 Mar 2023 14:59:50 +0900
+
 shim (15.7-1~deb11u1) bullseye; urgency=medium
 
   * New upstream release fixing more bugs
